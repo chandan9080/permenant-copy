@@ -1,27 +1,36 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addText } from "../../Redux/textSlice";
+import { setText } from "../../Redux/textSlice";
 
-const AddPop = () => {
-  const dipatch = useDispatch();
+const UpdatePopUp = ({ item }) => {
+  const dispatch = useDispatch();
   const text = useSelector((state) => state.text);
   const handleGoButton = () => {
-    dipatch(addText(searchTerm));
-    let newText = [...text, { id: text.length + 1, name: searchTerm }];
-    console.log(newText);
+    let newText = text.map((tex) => {
+      if (tex.id === item.id) {
+        tex.name = searchTerm;
+      }
+      return tex;
+    });
     localStorage.setItem("text", JSON.stringify(newText));
+    dispatch(setText());
+    setSearchTerm("");
+    inputRef.current.innerText = "";
   };
+  const inputRef = useRef();
   const [searchTerm, setSearchTerm] = useState("");
   return (
     <div>
       <div className="search_input"></div>
       <input
+        ref={inputRef}
         placeholder="Search Your Data"
         type="text"
         className="search_input_bar"
         onChange={(e) => {
-          e.preventDefault();
           setSearchTerm(e.target.value);
+          inputRef.current.focus();
+          inputRef.current.innerText = e.target.value;
         }}
       ></input>
       <button className="search_input_button" onClick={handleGoButton}>
@@ -31,4 +40,4 @@ const AddPop = () => {
   );
 };
 
-export default AddPop;
+export default UpdatePopUp;

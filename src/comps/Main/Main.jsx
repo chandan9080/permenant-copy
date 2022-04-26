@@ -1,14 +1,15 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
-import AddPop from "../AddPop/AddPop";
+import { useDispatch, useSelector } from "react-redux";
+import AddPop from "../Popups/AddPop";
 import Card from "../Card/Card";
+import { deleteAll } from "../../Redux/textSlice";
 
 const Main = () => {
   const [filteredData, setFilteredData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [popup, setPopup] = useState(false);
   const text = useSelector((state) => state.text);
-
+  const dispatch = useDispatch();
   const handleGoButton = () => {
     setFilteredData(
       text.filter((item) =>
@@ -18,19 +19,20 @@ const Main = () => {
   };
   return (
     <div className="main_container">
-      <div className="search_input"></div>
-      <input
-        placeholder="Search Your Data"
-        type="text"
-        className="search_input_bar"
-        onChange={(e) => {
-          e.preventDefault();
-          setSearchTerm(e.target.value);
-        }}
-      ></input>
-      <button className="search_input_button" onClick={handleGoButton}>
-        Go
-      </button>
+      <div className="search_input">
+        <input
+          placeholder="Search Your Data"
+          type="text"
+          className="search_input_bar"
+          onChange={(e) => {
+            e.preventDefault();
+            setSearchTerm(e.target.value);
+          }}
+        ></input>
+        <button className="search_input_button" onClick={handleGoButton}>
+          Go
+        </button>
+      </div>
       <div className="add_item">
         <button
           className="add_item_button btn"
@@ -51,6 +53,14 @@ const Main = () => {
               return <Card key={index} item={item} />;
             })}
       </div>
+      <button
+        className="btn"
+        onClick={() => {
+          dispatch(deleteAll());
+        }}
+      >
+        Delete All
+      </button>
     </div>
   );
 };

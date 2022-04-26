@@ -4,27 +4,15 @@ const textSlice = createSlice({
   name: "text",
   initialState: [],
   reducers: {
-    addText: (state, action) => {
-      state.push({ id: state.length + 1, name: action.payload });
-    },
     setText: (state, action) => {
-      if (state === action.payload) {
-        return state;
-      }
-      return action.payload;
+      let localText = JSON.parse(localStorage.getItem("text"));
+      return localText;
     },
-    updateText: (state, action) => {
-      state = state.map((item) => {
-        if (item.id === action.payload.id) {
-          item.name = action.payload.name;
-        }
-        return item;
-      });
-    },
-    deleteText(state, action) {
-      state = state.filter((item) => item.id !== action.payload.id);
+    deleteAll: (state, action) => {
+      localStorage.removeItem("text");
+      return [];
     },
   },
 });
-export const { setText, updateText, deleteText, addText } = textSlice.actions;
+export const { setText, deleteAll } = textSlice.actions;
 export default textSlice.reducer;
