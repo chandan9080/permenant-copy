@@ -1,25 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import Main from "./comps/Main/Main";
+import { setText } from "./Redux/textSlice";
 
-function App() {
+const App = () => {
+  const dispatch = useDispatch();
+  const text = useSelector((state) => state.text);
+  console.log("text: ", text);
+  useEffect(() => {
+    let localText = JSON.parse(localStorage.getItem("text"));
+    dispatch(setText(localText));
+    console.log("helo");
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Main></Main>
     </div>
   );
-}
+};
 
 export default App;
