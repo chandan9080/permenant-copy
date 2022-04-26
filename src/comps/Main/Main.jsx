@@ -10,7 +10,6 @@ const Main = () => {
   const text = useSelector((state) => state.text);
 
   const handleGoButton = () => {
-    console.log(searchTerm);
     setFilteredData(
       text.filter((item) =>
         item.name.toLowerCase().includes(searchTerm.toLowerCase())
