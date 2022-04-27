@@ -6,12 +6,14 @@ const UpdatePopUp = ({ item }) => {
   const dispatch = useDispatch();
   const text = useSelector((state) => state.text);
   const handleGoButton = () => {
-    let newText = text.map((tex) => {
-      if (tex.id === item.id) {
-        tex.name = searchTerm;
+    let newText = [];
+    for (let i = 0; i < text.length; i++) {
+      if (text[i].id === item.id) {
+        newText.push({ id: item.id, name: searchTerm });
+      } else {
+        newText.push(text[i]);
       }
-      return tex;
-    });
+    }
     localStorage.setItem("text", JSON.stringify(newText));
     dispatch(setText());
     setSearchTerm("");
@@ -20,17 +22,15 @@ const UpdatePopUp = ({ item }) => {
   const inputRef = useRef();
   const [searchTerm, setSearchTerm] = useState("");
   return (
-    <div>
+    <div className="popup">
       <div className="search_input"></div>
       <input
         ref={inputRef}
-        placeholder="Search Your Data"
+        placeholder={item.name}
         type="text"
         className="search_input_bar"
         onChange={(e) => {
           setSearchTerm(e.target.value);
-          inputRef.current.focus();
-          inputRef.current.innerText = e.target.value;
         }}
       ></input>
       <button className="search_input_button" onClick={handleGoButton}>

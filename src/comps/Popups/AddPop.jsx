@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setText } from "../../Redux/textSlice";
 
@@ -10,13 +10,17 @@ const AddPop = () => {
     localStorage.setItem("text", JSON.stringify(newText));
     dispatch(setText());
     setSearchTerm("");
+    console.log(inputRef.current.innerText);
+    inputRef.current.innerText = "";
   };
+  const inputRef = useRef();
   const [searchTerm, setSearchTerm] = useState("");
   return (
-    <div>
+    <div className="popup">
       <div className="search_input"></div>
       <input
-        placeholder="Search Your Data"
+        ref={inputRef}
+        placeholder="Add Data"
         type="text"
         className="search_input_bar"
         onChange={(e) => {
